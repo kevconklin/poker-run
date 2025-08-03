@@ -7,7 +7,6 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="images/favicon.ico" />
 
-
   <!-- Inter Font -->
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 
@@ -25,16 +24,15 @@
 
     /* Body */
     body {
-    margin: 0;
-    padding-top: 5rem; /* nav height (≈3.5rem) + extra 1.5rem spacing */
-    font-family: 'Inter', sans-serif;
-    background: var(--bg-color);
-    line-height: 1.6;
+      margin: 0;
+      padding-top: 5rem; /* nav height + extra spacing */
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-color);
+      line-height: 1.6;
     }
 
-
     /* NAVBAR */
-    nav {
+    #site-nav {
       position: fixed;
       top: 0;
       left: 0;
@@ -45,18 +43,21 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1rem 2rem;               /* increased padding */
+      padding: 1rem 2rem;
     }
+    /* Brand block */
     .nav-brand {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 0;
-  gap: 0.5rem;
-}
-.nav-brand .favicon {
-  width: 32px;
-  height: 32px;
-}
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 0;
+      gap: 0.5rem;
+      position: relative; /* for smoke puffs */
+    }
+    .nav-brand .favicon {
+      width: 32px;
+      height: 32px;
+      animation: driveIn 1.2s ease-out forwards;
+    }
     .nav-brand h1 {
       margin: 0;
       font-size: 1.5rem;
@@ -64,23 +65,33 @@
       line-height: 1.2;
     }
 
+    /* Toggle button */
+    #nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      cursor: pointer;
+    }
+
     /* Navbar links */
-    nav ul {
+    #site-nav ul {
       list-style: none;
       margin: 0;
       padding: 0;
       display: flex;
       gap: 1.5rem;
     }
-    nav ul li a {
+    #site-nav ul li a {
       text-decoration: none;
       color: var(--primary-color);
       font-weight: 500;
       font-size: 0.95rem;
-      padding: 0.5rem 1rem;             /* added padding */
+      padding: 0.5rem 1rem;
       display: inline-block;
     }
-    nav ul li a:hover {
+    #site-nav ul li a:hover {
       text-decoration: underline;
     }
 
@@ -149,29 +160,23 @@
       overflow: hidden;
       border-radius: 8px;
       background: #fff;
-      max-height: 400px;                /* cap overall height */
+      max-height: 400px;
     }
-    /* Track of slides */
     .slides {
       display: flex;
       transition: transform 0.5s ease-in-out;
     }
-    /* Each slide */
     .slides .slide {
       position: relative;
       min-width: 100%;
     }
-    /* Images */
     .slides .slide img {
       display: block;
       max-width: 100%;
       max-height: 400px;
-      width: auto;
-      height: auto;
-      object-fit: contain;              /* no cropping */
+      object-fit: contain;
       margin: 0 auto;
     }
-    /* Caption overlay */
     .slides .caption {
       position: absolute;
       bottom: 0;
@@ -184,7 +189,6 @@
       text-align: center;
       box-sizing: border-box;
     }
-    /* Nav buttons */
     .slider .prev,
     .slider .next {
       position: absolute;
@@ -201,61 +205,73 @@
     .slider .prev { left: 0.5rem; }
     .slider .next { right: 0.5rem; }
 
-    /* buffer all anchor targets by navbar height + extra */
-#map,
-#rules,
-#cost,
-#after,
-#about {
-  scroll-margin-top: 4.5rem;  /* 3.5rem navbar + 1rem gap */
-}
+    /* Anchor buffer */
+    #map,
+    #rules,
+    #cost,
+    #after,
+    #about {
+      scroll-margin-top: 4.5rem;
+    }
 
+    /* Drive-in animation */
+    @keyframes driveIn {
+      from { transform: translateX(200%); }
+      to   { transform: translateX(0); }
+    }
+    /* Smoke puff animation */
+    @keyframes burnout {
+      0%   { opacity: 0.6; transform: translate(0,0) scale(1); }
+      100% { opacity: 0;   transform: translate(-40px,-30px) scale(2); }
+    }
+    .smoke {
+      position: absolute;
+      width: 8px; height: 8px;
+      background: radial-gradient(circle at center,
+                    rgba(180,180,180,0.7) 0%, transparent 60%);
+      border-radius: 50%;
+      animation: burnout 1s ease-out forwards;
+      pointer-events: none;
+      opacity: 0;
+    }
 
-    /* Drive-in animation for icon */
-@keyframes driveIn {
-  from { transform: translateX(200%) rotate(0deg); }
-  to   { transform: translateX(0) rotate(0deg); }
-}
-
-/* Smoke puff animation */
-@keyframes burnout {
-  0%   { opacity: 0.6; transform: translate(0,0) scale(1); }
-  100% { opacity: 0;   transform: translate(-40px,-30px) scale(2); }
-}
-
-/* Make nav‐brand a positioning context */
-.nav-brand {
-  position: relative;
-}
-
-/* Icon itself */
-.nav-brand .favicon {
-  animation: driveIn 1.2s ease-out forwards;
-}
-
-/* Smoke puffs */
-.smoke {
-  position: absolute;
-  width: 8px; height: 8px;
-  background: radial-gradient(circle at center,
-                rgba(180,180,180,0.7) 0%, transparent 60%);
-  border-radius: 50%;
-  animation: burnout 1s ease-out forwards;
-  pointer-events: none;
-  /* start hidden */
-  opacity: 0;
-}
-
+    /* Mobile nav */
+    @media (max-width: 600px) {
+      #nav-toggle {
+        display: block;
+      }
+      #site-nav ul {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: #fff;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      #site-nav.open ul {
+        display: flex;
+      }
+      #site-nav ul li {
+        width: 100%;
+        text-align: center;
+      }
+      #site-nav ul li a {
+        display: block;
+        padding: 1rem;
+      }
+    }
   </style>
 </head>
-
 <body>
   <!-- NAVIGATION BAR + HEADER -->
-  <nav>
+  <nav id="site-nav">
     <div class="nav-brand">
       <img src="images/favicon.ico" alt="UTV icon" class="favicon" />
       <h1>Pee Wee &amp; Scott’s Poker Run</h1>
     </div>
+    <button id="nav-toggle" aria-label="Toggle navigation">☰</button>
     <ul>
       <li><a href="#map">Route Map</a></li>
       <li><a href="#rules">Rules</a></li>
@@ -377,30 +393,31 @@
         slide.querySelector('.caption').textContent = img.alt;
       });
     })();
-  </script>
-  <script>
+
+    // Mobile nav toggle
+    document.getElementById('nav-toggle').addEventListener('click', () => {
+      document.getElementById('site-nav').classList.toggle('open');
+    });
+
+    // Smoke animation
     window.addEventListener('load', () => {
       const icon  = document.querySelector('.nav-brand .favicon');
       const brand = icon.parentElement;
       const rect  = icon.getBoundingClientRect();
       const baseX = rect.left - brand.getBoundingClientRect().left + 4;
       const baseY = rect.top  - brand.getBoundingClientRect().top  + rect.height * 0.6;
-  
-      // Emit 5 puffs, staggered
+
       for (let i = 0; i < 5; i++) {
         setTimeout(() => {
           const puff = document.createElement('span');
           puff.className = 'smoke';
-          // position each at the icon's “tire”
           puff.style.left = `${baseX}px`;
           puff.style.top  = `${baseY}px`;
           brand.appendChild(puff);
-          // remove after animation
           setTimeout(() => puff.remove(), 1000);
         }, 400 + i * 300);
       }
     });
   </script>
-  
 </body>
 </html>
