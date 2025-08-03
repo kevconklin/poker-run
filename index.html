@@ -25,12 +25,13 @@
 
     /* Body */
     body {
-      margin: 0;
-      padding-top: 3.5rem;               /* space for the fixed navbar */
-      font-family: 'Inter', sans-serif;
-      background: var(--bg-color);
-      line-height: 1.6;
+    margin: 0;
+    padding-top: 5rem; /* nav height (≈3.5rem) + extra 1.5rem spacing */
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-color);
+    line-height: 1.6;
     }
+
 
     /* NAVBAR */
     nav {
@@ -200,6 +201,16 @@
     .slider .prev { left: 0.5rem; }
     .slider .next { right: 0.5rem; }
 
+    /* buffer all anchor targets by navbar height + extra */
+#map,
+#rules,
+#cost,
+#after,
+#about {
+  scroll-margin-top: 4.5rem;  /* 3.5rem navbar + 1rem gap */
+}
+
+
     /* Drive-in animation for icon */
 @keyframes driveIn {
   from { transform: translateX(200%) rotate(0deg); }
@@ -254,7 +265,6 @@
     </ul>
   </nav>
 
-  <br/>
   <div class="container">
     <!-- Info Card -->
     <div class="card centered">
@@ -308,7 +318,7 @@
 
     <!-- ABOUT -->
     <div class="card" id="about">
-      <h2>About This Event</h2>
+      <h2>About The Poker Run</h2>
       <p>
         This annual event honors the memory of Steve “Pee Wee” Martin and Scott Conklin, raising awareness for ALS.
         Funds raised go towards local ALS charities and the Hess Eastman American Legion Post 174. Your additional
