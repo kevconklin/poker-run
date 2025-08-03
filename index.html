@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pee Wee &amp; Scott’s Poker Run</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="images/favicon.ico" />
+
+
+  <!-- Inter Font -->
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
+  <style>
+    :root {
+      --primary-color: #307FE2;
+      --bg-color: #e0e0e0;
+      --text-color: #000;
+    }
+
+    /* Global resets */
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Body */
+    body {
+      margin: 0;
+      padding-top: 3.5rem;               /* space for the fixed navbar */
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-color);
+      line-height: 1.6;
+    }
+
+    /* NAVBAR */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;               /* increased padding */
+    }
+    .nav-brand {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  gap: 0.5rem;
+}
+.nav-brand .favicon {
+  width: 32px;
+  height: 32px;
+}
+    .nav-brand h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      line-height: 1.2;
+    }
+
+    /* Navbar links */
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: var(--primary-color);
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.5rem 1rem;             /* added padding */
+      display: inline-block;
+    }
+    nav ul li a:hover {
+      text-decoration: underline;
+    }
+
+    /* Typography */
+    p {
+      color: var(--text-color);
+      margin: 8px 0;
+    }
+    h2,
+    footer {
+      color: var(--primary-color);
+    }
+    ul,
+    ul li {
+      color: var(--text-color);
+      padding-left: 1.2rem;
+      margin: 0 0 0.5rem 0;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .card h2 {
+      margin-top: 0;
+      font-weight: 500;
+    }
+    .card.centered {
+      text-align: center;
+    }
+
+    /* Map */
+    #map {
+      height: 500px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    #map iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 40px;
+    }
+
+    /* Slider container */
+    .slider {
+      position: relative;
+      max-width: 100%;
+      margin: 1rem auto;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #fff;
+      max-height: 400px;                /* cap overall height */
+    }
+    /* Track of slides */
+    .slides {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    /* Each slide */
+    .slides .slide {
+      position: relative;
+      min-width: 100%;
+    }
+    /* Images */
+    .slides .slide img {
+      display: block;
+      max-width: 100%;
+      max-height: 400px;
+      width: auto;
+      height: auto;
+      object-fit: contain;              /* no cropping */
+      margin: 0 auto;
+    }
+    /* Caption overlay */
+    .slides .caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      padding: 0.5rem;
+      font-size: 0.95rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    /* Nav buttons */
+    .slider .prev,
+    .slider .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      border: none;
+      color: #fff;
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+      border-radius: 4px;
+      z-index: 1;
+    }
+    .slider .prev { left: 0.5rem; }
+    .slider .next { right: 0.5rem; }
+
+    /* Drive-in animation for icon */
+@keyframes driveIn {
+  from { transform: translateX(200%) rotate(0deg); }
+  to   { transform: translateX(0) rotate(0deg); }
+}
+
+/* Smoke puff animation */
+@keyframes burnout {
+  0%   { opacity: 0.6; transform: translate(0,0) scale(1); }
+  100% { opacity: 0;   transform: translate(-40px,-30px) scale(2); }
+}
+
+/* Make nav‐brand a positioning context */
+.nav-brand {
+  position: relative;
+}
+
+/* Icon itself */
+.nav-brand .favicon {
+  animation: driveIn 1.2s ease-out forwards;
+}
+
+/* Smoke puffs */
+.smoke {
+  position: absolute;
+  width: 8px; height: 8px;
+  background: radial-gradient(circle at center,
+                rgba(180,180,180,0.7) 0%, transparent 60%);
+  border-radius: 50%;
+  animation: burnout 1s ease-out forwards;
+  pointer-events: none;
+  /* start hidden */
+  opacity: 0;
+}
+
+  </style>
+</head>
+
+<body>
+  <!-- NAVIGATION BAR + HEADER -->
+  <nav>
+    <div class="nav-brand">
+      <img src="images/favicon.ico" alt="UTV icon" class="favicon" />
+      <h1>Pee Wee &amp; Scott’s Poker Run</h1>
+    </div>
+    <ul>
+      <li><a href="#map">Route Map</a></li>
+      <li><a href="#rules">Rules</a></li>
+      <li><a href="#cost">Cost</a></li>
+      <li><a href="#after">After Run</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+  </nav>
+
+  <br/>
+  <div class="container">
+    <!-- Info Card -->
+    <div class="card centered">
+      <p>📅 August 23, 2025</p>
+      <p>Registration: 9:30 AM – 10:30 AM</p>
+      <p>📍 53575 Red Arrow Highway, Lawrence, MI 49064</p>
+      <p>
+        <a
+          href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Pee+Wee+%26+Scott%E2%80%99s+Poker+Run&amp;dates=20250823T093000/20250823T103000&amp;details=Join+us+for+the+8th+Annual+Pee+Wee+%26+Scott%E2%80%99s+Poker+Run&amp;location=53575+Red+Arrow+Highway%2C+Lawrence%2C+MI+49064"
+          target="_blank"
+        >
+          📆 Add to Google Calendar
+        </a>
+      </p>
+    </div>
+
+    <!-- ROUTE MAP -->
+    <div id="map">
+      <iframe
+        src="https://www.google.com/maps/d/embed?mid=1wSTBfbAJis7EQryE04WFM8tXfMyUPWo"
+        allowfullscreen
+        loading="lazy">
+      </iframe>
+    </div>
+
+    <!-- RULES -->
+    <div class="card" id="rules">
+      <h2>Poker Run Rules and Guidance</h2>
+      <ul>
+        <li>Every participant must complete a <a
+            href="https://docs.google.com/document/d/1eA2Ra6q8cdnA-tvkQR5C76s_SKIzEExllK59yQ0A_y8/edit?usp=sharing"
+            target="_blank">scorecard</a> to be eligible to win.</li>
+        <li>Every participant must draw one card at each card stop. No duplicate cards can be used.</li>
+        <li>In the event of a tie, there will be a draw for high card to determine the winner.</li>
+        <li>No alcohol allowed on motor vehicles. All alcohol needs to be placed in the trailer and accessed ONLY
+          at the stops.</li>
+      </ul>
+    </div>
+
+    <!-- COST -->
+    <div class="card" id="cost">
+      <h2>Cost</h2>
+      <p><strong>Driver:</strong> $25 | <strong>Each Passenger:</strong> $10</p>
+    </div>
+
+    <!-- AFTER RUN -->
+    <div class="card" id="after">
+      <h2>After the Run</h2>
+      <p>Food and the announcement of the winner will take place immediately after the route.</p>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="card" id="about">
+      <h2>About This Event</h2>
+      <p>
+        This annual event honors the memory of Steve “Pee Wee” Martin and Scott Conklin, raising awareness for ALS.
+        Funds raised go towards local ALS charities and the Hess Eastman American Legion Post 174. Your additional
+        donations are greatly appreciated!
+      </p>
+
+      <!-- Photo slider -->
+      <div class="slider">
+        <button class="prev">‹</button>
+        <div class="slides">
+          <div class="slide">
+            <img src="images/peewee.jpeg" alt="Steve “Pee Wee” Martin">
+            <div class="caption"></div>
+          </div>
+          <div class="slide">
+            <img src="images/scott.png" alt="Scott Conklin">
+            <div class="caption"></div>
+          </div>
+          <div class="slide">
+            <img src="images/2024.jpg" alt="Start of 2024 Poker Run">
+            <div class="caption"></div>
+          </div>
+        </div>
+        <button class="next">›</button>
+      </div>
+    </div>
+
+    <footer>
+      &copy; 2025 Pee Wee &amp; Scott’s Poker Run
+    </footer>
+  </div>
+
+  <script>
+    (function() {
+      const slidesEl = document.querySelector('.slides');
+      const slides   = document.querySelectorAll('.slides .slide');
+      const total    = slides.length;
+      let idx = 0;
+
+      function update() {
+        slidesEl.style.transform = `translateX(-${idx * 100}%)`;
+      }
+
+      document.querySelector('.prev').addEventListener('click', () => {
+        idx = (idx - 1 + total) % total;
+        update();
+      });
+      document.querySelector('.next').addEventListener('click', () => {
+        idx = (idx + 1) % total;
+        update();
+      });
+
+      // populate captions from each image's alt
+      slides.forEach(slide => {
+        const img = slide.querySelector('img');
+        slide.querySelector('.caption').textContent = img.alt;
+      });
+    })();
+  </script>
+  <script>
+    window.addEventListener('load', () => {
+      const icon  = document.querySelector('.nav-brand .favicon');
+      const brand = icon.parentElement;
+      const rect  = icon.getBoundingClientRect();
+      const baseX = rect.left - brand.getBoundingClientRect().left + 4;
+      const baseY = rect.top  - brand.getBoundingClientRect().top  + rect.height * 0.6;
+  
+      // Emit 5 puffs, staggered
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+          const puff = document.createElement('span');
+          puff.className = 'smoke';
+          // position each at the icon's “tire”
+          puff.style.left = `${baseX}px`;
+          puff.style.top  = `${baseY}px`;
+          brand.appendChild(puff);
+          // remove after animation
+          setTimeout(() => puff.remove(), 1000);
+        }, 400 + i * 300);
+      }
+    });
+  </script>
+  
+</body>
+</html>
